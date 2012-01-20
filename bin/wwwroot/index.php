@@ -214,7 +214,13 @@ else
 			$coins = (int)$row['VirtualCoins'];
 			$coins += (int)$winAmount;
 			
-			$sql->Set("UPDATE users SET VirtualCoins = '".$coins."' WHERE FID='".$facebook->getUser()."'");
+			$numWins = (int)$row['Wins'];
+			$numWins++;
+			
+			$collectiveWins = (int)$row['CollectiveWins'];
+			$collectiveWins += $winAmount;
+			
+			$sql->Set("UPDATE users SET VirtualCoins = '".$coins."', Wins = '".$numWins."', CollectiveWins='".$collectiveWins."' WHERE FID='".$facebook->getUser()."'");
 			
 			$sql->Set("UPDATE rolls SET Confirmed = '1' WHERE FID='".$facebook->getUser()."' AND RollID='".$rollID."'");
 			
@@ -237,6 +243,7 @@ else
 			$tumbler2 = str_shuffle("1223334444");
 			$tumbler3 = str_shuffle("1223334444");
 			
+			echo "\n<firstLogin>0</firstLogin>";
 			echo "<virtualCoins>".$virtualCoins."</virtualCoins>";
 			echo "<facebookCredits>123</facebookCredits>";
 			echo "<soundEnabled>".$soundEnabled."</soundEnabled>";
@@ -246,7 +253,7 @@ else
 			echo "<tumbler2>".$tumbler2."</tumbler2>";
 			echo "<tumbler3>".$tumbler3."</tumbler3>";
 		
-			$sql->Set("INSERT INTO users (TumblerConfiguration, LastLogin) VALUES ('".$tumbler1.$tumbler2.$tumbler3."',NOW()) WHERE FID='".$facebook->getUser()."'");
+			$sql->Set("INSERT INTO users (TumblerConfiguration, LastLogin) VALUES ('".$tumbler1.$tumbler2.$tumbler3."', NOW()) WHERE FID='".$facebook->getUser()."'");
 		}
 		else
 		// USER DOESN'T EXIST. CREATE ONE!
@@ -264,6 +271,7 @@ else
 			$musicEnabled = $row['MusicEnabled'];
 			$rolls = $row['Rolls'];
 			
+			echo "\n<firstLogin>1</firstLogin>";
 			echo "\n<virtualCoins>".$virtualCoins."</virtualCoins>";
 			echo "\n<facebookCredits>456</facebookCredits>";
 			echo "\n<soundEnabled>".$soundEnabled."</soundEnabled>";
@@ -277,12 +285,13 @@ else
 		$friends = $facebook->api('/me/friends?access_token='.$facebook->getAccessToken(),'GET');
 		$me = $facebook->api('/me','GET');
 		
-		$myProfilePicture = "http://graph.facebook.com/".$facebook->getUser()."/picture?type=large";
+		$myID = $facebook->getUser();
+		$myProfilePicture = "http://graph.facebook.com/".$myID."/picture?type=large";
 		
 		echo "\n<numOfFriends>".sizeof($friends['data'])."</numOfFriends>";
 		echo "\n<profile0Name>".$me['name']."</profile0Name>";
 		echo "\n<profile0ID>".$me['id']."</profile0ID>";
-		echo "\n<profile0Image>".$myProfilePicture."</profile0Image>";
+		echo "\n<profile0Image>http://graph.facebook.com/".$myID."/picture?type=large</profile0Image>";
 		
 		for ($n=0; $n<sizeof($friends['data']); $n++)
 		{
