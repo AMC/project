@@ -137,6 +137,15 @@ else if ($action == "play")
 			$sql->Set("UPDATE users SET VirtualCoins = '".$coins."', Rolls = '".$rollID."' WHERE FID='".$fid."'");
 		}
 	}
+	// else if (future game mode....)
+		
+	//$minigame = rand(1,20);
+	$minigame = 10;
+	if ($minigame == 10)
+	{
+		echo "<minigame>1</minigame>";
+	}
+	else "<minigame>0</minigame>";
 }
 else if ($action == "win")
 {

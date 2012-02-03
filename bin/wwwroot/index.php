@@ -182,6 +182,15 @@ else
 				$sql->Set("UPDATE users SET VirtualCoins = '".$coins."', Rolls = '".$rollID."' WHERE FID='".$facebook->getUser()."'");
 			}
 		}
+		// else if (future game mode....)
+		
+		//$minigame = rand(1,20);
+		$minigame = 10;
+		if ($minigame == 10)
+		{
+			echo "<minigame>1</minigame>";
+		}
+		else "<minigame>0</minigame>";
 	}
 	else if ($action == "win")
 	{
@@ -286,15 +295,17 @@ else
 		$me = $facebook->api('/me','GET');
 		
 		$myID = $facebook->getUser();
+		
+
 		$myProfilePicture = "http://graph.facebook.com/".$myID."/picture?type=large";
 		
 		echo "\n<numOfFriends>".sizeof($friends['data'])."</numOfFriends>";
 		echo "\n<profile0Name>".$me['name']."</profile0Name>";
 		echo "\n<profile0ID>".$me['id']."</profile0ID>";
-		echo "\n<profile0Image>http://graph.facebook.com/".$myID."/picture?type=large</profile0Image>";
+		echo "\n<profile0Image>".$myProfilePicture."</profile0Image>";
 		
 		for ($n=0; $n<sizeof($friends['data']); $n++)
-		{
+		{	
 			echo "\n<profile".($n+1)."Name>".$friends['data'][$n]['name']."</profile".($n+1)."Name>";
 			echo "\n<profile".($n+1)."ID>".$friends['data'][$n]['id']."</profile".($n+1)."ID>";
 			echo "\n<profile".($n+1)."Image>http://graph.facebook.com/".$friends['data'][$n]['id']."/picture?type=large</profile".($n+1)."Image>";
