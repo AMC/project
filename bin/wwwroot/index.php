@@ -93,8 +93,15 @@ if ($signedRequest)
 else
 {
 	$action = $_REQUEST['action'];
-	
+
 	if ($facebook->getUser() == 0) die($authURL);
+	
+	if($action == "clearDB")
+	{
+		$sql->Set("TRUNCATE TABLE users");
+		$sql->Set("TRUNCATE TABLE rolls");
+		die("SUCCESS");
+	}
 
 	if ($action == "toggleSoundOn")
 		$sql->Set("UPDATE users SET SoundEnabled = '1' WHERE FID='".$facebook->getUser()."'"); 
@@ -117,6 +124,8 @@ else
 				die ( "<error>Not enough currency to play!</error>" );
 			else
 			{
+				$achievements = $row['Achievements'];
+				
 				$rollID = (int)($row['Rolls']) + 1;
 				$coins = (int)$row['VirtualCoins'];
 				$result = "";
@@ -129,11 +138,18 @@ else
 				echo "<rollID>".$rollID."</rollID>";
 				echo "<result>".$result."</result>";
 				
+				$achieve = strpos($achievements,"[FirstMatrix:");
+				if ($achieve === false) 
+				{
+					echo "<achievement>FirstMatrix</achievement>";
+					$achievements = $achievements."[FirstMatrix:1]";
+				}
+				
 				$sql->Set("INSERT INTO rolls (FID, RollID, Mode, Result, Confirmed, bid) VALUES ('".$facebook->getUser()."','".$rollID."','Matrix','".$result."','0','".$bid."')");
 				
 				$coins -= $bid;
 				
-				$sql->Set("UPDATE users SET VirtualCoins = '".$coins."', Rolls = '".$rollID."' WHERE FID='".$facebook->getUser()."'");
+				$sql->Set("UPDATE users SET VirtualCoins = '".$coins."', Rolls = '".$rollID."', Achievements = '".$achievements."' WHERE FID='".$facebook->getUser()."'");
 			}
 		}
 		else if ($mode == "slots")
@@ -144,6 +160,8 @@ else
 				die ( "<error>Not enough currency to play!</error>" );
 			else
 			{
+				$achievements = $row['Achievements'];
+				
 				$rollID = (int)($row['Rolls']) + 1;
 				$coins = (int)$row['VirtualCoins'];
 				$result = rand(0,9)."".rand(0,9)."".rand(0,9);
@@ -151,13 +169,20 @@ else
 				echo "<rollID>".$rollID."</rollID>";
 				echo "<result>".$result."</result>";
 				
+				$achieve = strpos($achievements,"[FirstSlots:");
+				if ($achieve === false) 
+				{
+					echo "<achievement>FirstSlots</achievement>";
+					$achievements = $achievements."[FirstSlots:1]";
+				}
+				
 				$tumblerConfig = $row['TumblerConfiguration'];
 				
 				$sql->Set("INSERT INTO rolls (FID, RollID, Mode, TumblerConfiguration, Result, Confirmed, bid) VALUES ('".$facebook->getUser()."','".$rollID."','Slots','".$tumblerConfig."','".$result."','0','".$bid."')");
 				
 				$coins -= $bid;
 				
-				$sql->Set("UPDATE users SET VirtualCoins = '".$coins."', Rolls = '".$rollID."' WHERE FID='".$facebook->getUser()."'");
+				$sql->Set("UPDATE users SET VirtualCoins = '".$coins."', Rolls = '".$rollID."', Achievements = '".$achievements."' WHERE FID='".$facebook->getUser()."'");
 			}
 		}
 		else if ($mode == "poker")
@@ -168,6 +193,8 @@ else
 				die ( "<error>Not enough currency to play! You bid ".$bid." but only have ".$row['VirtualCoins']."!!! GET MORE MONEY!</error>" );
 			else
 			{
+				$achievements = $row['Achievements'];
+				
 				$rollID = (int)($row['Rolls']) + 1;
 				$coins = (int)$row['VirtualCoins'];
 				$result = substr(str_shuffle("abcdefghijklmnopqrstuvwxyzBCDEFGHILMNOPRSTUVWXYZ1234"),0,5);
@@ -175,11 +202,18 @@ else
 				echo "<rollID>".$rollID."</rollID>";
 				echo "<result>".$result."</result>";
 				
+				$achieve = strpos($achievements,"[FirstPoker:");
+				if ($achieve === false) 
+				{
+					echo "<achievement>FirstPoker</achievement>";
+					$achievements = $achievements."[FirstPoker:1]";
+				}
+				
 				$sql->Set("INSERT INTO rolls (FID, RollID, Mode, Result, Confirmed, bid) VALUES ('".$facebook->getUser()."','".$rollID."','Poker','".$result."','0','".$bid."')");
 				
 				$coins -= $bid;
 				
-				$sql->Set("UPDATE users SET VirtualCoins = '".$coins."', Rolls = '".$rollID."' WHERE FID='".$facebook->getUser()."'");
+				$sql->Set("UPDATE users SET VirtualCoins = '".$coins."', Rolls = '".$rollID."', Achievements = '".$achievements."' WHERE FID='".$facebook->getUser()."'");
 			}
 		}
 		// else if (future game mode....)
@@ -261,6 +295,8 @@ else
 			echo "<tumbler1>".$tumbler1."</tumbler1>";
 			echo "<tumbler2>".$tumbler2."</tumbler2>";
 			echo "<tumbler3>".$tumbler3."</tumbler3>";
+			echo "<facebookID>".$facebook->getUser()."</facebookID>";
+			echo "<facebookAccessToken>".$facebook->getAccessToken()."</facebookAccessToken>";
 		
 			$sql->Set("INSERT INTO users (TumblerConfiguration, LastLogin) VALUES ('".$tumbler1.$tumbler2.$tumbler3."', NOW()) WHERE FID='".$facebook->getUser()."'");
 		}
@@ -289,6 +325,8 @@ else
 			echo "<tumbler1>".$tumbler1."</tumbler1>";
 			echo "<tumbler2>".$tumbler2."</tumbler2>";
 			echo "<tumbler3>".$tumbler3."</tumbler3>";
+			echo "<facebookID>".$facebook->getUser()."</facebookID>";
+			echo "<facebookAccessToken>".$facebook->getAccessToken()."</facebookAccessToken>";
 		}
 		
 		$friends = $facebook->api('/me/friends?access_token='.$facebook->getAccessToken(),'GET');
