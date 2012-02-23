@@ -5,7 +5,7 @@ require_once("facebook.php");
 $appID = "296144650405719";
 $secret = "292e1d52a4f6dbc2d622da3ef849b4f7";
 
-$facebookURL = "http://apps.facebook.com/jp_casino_test/";
+$facebookURL = "http://apps.facebook.com/mugshotcasino/";
 $canvasURL = "http://www.fatesoftware.com/casino/index.php";
 $authURL = "https://www.facebook.com/dialog/oauth?client_id=".$appID."&redirect_uri=".urlencode($canvasURL);
 
@@ -218,8 +218,8 @@ else
 		}
 		// else if (future game mode....)
 		
-		//$minigame = rand(1,20);
-		$minigame = 10;
+		$minigame = rand(1,20);
+		//$minigame = 10;
 		if ($minigame == 10)
 		{
 			echo "<minigame>1</minigame>";
