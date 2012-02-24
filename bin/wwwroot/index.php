@@ -218,13 +218,25 @@ else
 		}
 		// else if (future game mode....)
 		
-		$minigame = rand(1,20);
-		//$minigame = 10;
+		$minigame = rand(1,15);
+		/*COMMENT THIS OUT*///$minigame = 10;
 		if ($minigame == 10)
 		{
 			echo "<minigame>1</minigame>";
 		}
 		else "<minigame>0</minigame>";
+	}
+	else if ($action == "minigame")
+	{
+		$winAmount = (int)$_REQUEST['winAmount'];
+		
+		$row = $sql->Get("SELECT * FROM users WHERE FID='".$facebook->getUser()."'");
+			
+		$coins = (int)$row['VirtualCoins'];
+		$coins += (int)$winAmount;
+		
+		$sql->Set("UPDATE users SET VirtualCoins = '".$coins."' WHERE FID='".$facebook->getUser()."'");
+		die("");
 	}
 	else if ($action == "win")
 	{
