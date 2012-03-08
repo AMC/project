@@ -1,0 +1,1 @@
+﻿package classes{	public class LinkedListNode 	{		public var data:*;		public var next:LinkedListNode;		public var previous:LinkedListNode;				public function LinkedListNode(data:*, previous:LinkedListNode = null, next:LinkedListNode = null) 		{			this.data = data;			this.next = next;			this.previous = previous;		}	}	}

@@ -1,0 +1,1 @@
+﻿package classes{	import flash.display.MovieClip;		public class Minigame extends GameObject 	{		public function Minigame() 		{			// constructor code		}	}	}

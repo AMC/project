@@ -218,9 +218,9 @@ else
 		}
 		// else if (future game mode....)
 		
-		$minigame = rand(1,15);
-		/*COMMENT THIS OUT*///$minigame = 10;
-		if ($minigame == 10)
+		$minigame = rand(1,10);
+		/*COMMENT THIS OUT*///$minigame = 5;
+		if ($minigame == 5)
 		{
 			echo "<minigame>1</minigame>";
 		}
@@ -291,6 +291,7 @@ else
 		if (strlen($row['FID']) > 0)
 		{
 			$virtualCoins = $row['VirtualCoins'];
+			$diamonds = $row['Diamonds'];
 			$soundEnabled = $row['SoundEnabled'];
 			$musicEnabled = $row['MusicEnabled'];
 			$rolls = $row['Rolls'];					// The current RollID for rolls to be passed in!
@@ -300,7 +301,7 @@ else
 			
 			echo "\n<firstLogin>0</firstLogin>";
 			echo "<virtualCoins>".$virtualCoins."</virtualCoins>";
-			echo "<facebookCredits>123</facebookCredits>";
+			echo "<facebookCredits>".$diamonds."</facebookCredits>";
 			echo "<soundEnabled>".$soundEnabled."</soundEnabled>";
 			echo "<musicEnabled>".$musicEnabled."</musicEnabled>";
 			echo "<rollID>".$rolls."</rollID>";
@@ -319,18 +320,19 @@ else
 			$tumbler2 = str_shuffle("1223334444");
 			$tumbler3 = str_shuffle("1223334444");
 			
-			$sql->Set("INSERT INTO users (FID, VirtualCoins, SoundEnabled, MusicEnabled, Rolls, Wins, CollectiveWins, TumblerConfiguration, Flag, LastLogin) VALUES ('".$facebook->getUser()."','1000','1','1','0','0','0','".$tumbler1.$tumbler2.$tumbler3."','0',NOW())");
+			$sql->Set("INSERT INTO users (FID, VirtualCoins, Diamonds, SoundEnabled, MusicEnabled, Rolls, Wins, CollectiveWins, TumblerConfiguration, Flag, LastLogin) VALUES ('".$facebook->getUser()."','1000','0','1','1','0','0','0','".$tumbler1.$tumbler2.$tumbler3."','0',NOW())");
 			
 			$row = $sql->Get("SELECT * FROM users WHERE FID='".$facebook->getUser()."'");
 			
 			$virtualCoins = $row['VirtualCoins'];
+			$diamonds = $row['Diamonds'];
 			$soundEnabled = $row['SoundEnabled'];
 			$musicEnabled = $row['MusicEnabled'];
 			$rolls = $row['Rolls'];
 			
 			echo "\n<firstLogin>1</firstLogin>";
 			echo "\n<virtualCoins>".$virtualCoins."</virtualCoins>";
-			echo "\n<facebookCredits>456</facebookCredits>";
+			echo "\n<diamonds>".$diamonds."</diamonds>";
 			echo "\n<soundEnabled>".$soundEnabled."</soundEnabled>";
 			echo "\n<musicEnabled>".$musicEnabled."</musicEnabled>";
 			echo "\n<rollID>".$rolls."</rollID>";

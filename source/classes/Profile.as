@@ -1,0 +1,1 @@
+﻿package classes{		public class Profile {		public var ImageURL:String;		public var Name:String;		public var ID:String;				public function Profile(Name:String, ID:String, ImageURL:String)		{			this.ImageURL = ImageURL;			this.Name = Name;			this.ID = ID;		}	}	}

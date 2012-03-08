@@ -1,1 +1,0 @@
-﻿package  {	import flash.display.MovieClip;		public class Minigame extends MovieClip 	{		public function Minigame() 		{			// constructor code		}	}	}
