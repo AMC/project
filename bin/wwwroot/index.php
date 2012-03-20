@@ -219,7 +219,7 @@ else
 		// else if (future game mode....)
 		
 		$minigame = rand(1,10);
-		/*COMMENT THIS OUT*///$minigame = 5;
+		/*COMMENT THIS OUT*/$minigame = 5;
 		if ($minigame == 5)
 		{
 			echo "<minigame>1</minigame>";
